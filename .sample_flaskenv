@@ -1,0 +1,11 @@
+SECRET_KEY=your_secret_key
+WTF_CSRF_SECRET_KEY=wtf_secret_key
+FLASK_APP="flask_for_startups:create_app('dev')"
+FLASK_ENV=development
+SESSION_COOKIE_HTTPONLY=True
+REMEMBER_COOKIE_HTTPONLY=True
+SESSION_COOKIE_SAMESITE=Strict
+BASE_DIR=/home/*/flask_for_startups
+DEV_DATABASE_URI=postgresql://your_user:your_password@localhost/your_dev_db_name
+DB_NAME=your_db_name
+TEST_DATABASE_URI=postgresql://your_user:your_password@localhost/your_test_db_name

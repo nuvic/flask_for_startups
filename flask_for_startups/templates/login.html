@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Login</h1>
+    <form id="login_form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"/>
+        <br /><br />
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email"/>
+        <br /><br />
+        <button type="submit">login</button>
+    </form>
+
+    <script src="/static/js/login.js"></script>
+{% endblock %}

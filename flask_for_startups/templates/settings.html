@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Settings</h1>
+    <h2>Update your email</h2>
+    <p>Your info:
+        <br>
+        <span id="current_email"></span>
+        <br>
+        <span id="current_username"></span>
+    </p>
+    <form id="settings_form">
+        <label for="email">New email:</label>
+        <input type="text" id="new_email" name="email"/>
+        <br><br>
+        <button type="submit">Update</button>
+    </form>
+
+    <script src="/static/js/settings.js"></script>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Register</h1>
+    <form id="register_form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"/>
+        <br /><br />
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email"/>
+        <br /><br />
+        <button type="submit">register</button>
+    </form>
+
+    <script src="/static/js/register.js"></script>
+{% endblock %}
