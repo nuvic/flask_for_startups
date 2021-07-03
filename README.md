@@ -145,6 +145,7 @@ psql -d your_test_database_name
 ### Repo setup
 
 * clone repo
+* `sudo apt-get install python3-dev` (needed to compile psycopg2, the python driver for PostgreSQL)
 * `python3 -m venv venv`
 * activate virtual environment: `source venv/bin/activate`
 * install requirements: `pip install -r requirements.txt`
