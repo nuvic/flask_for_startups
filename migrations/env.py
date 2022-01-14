@@ -43,7 +43,7 @@ def get_dot_env():
 env_values = get_dot_env()
 
 if db_env == 'dev':
-    config.set_main_option('sqlalchemy.url', env_values['SQLALCHEMY_DATABASE_URI'])
+    config.set_main_option('sqlalchemy.url', env_values['DEV_DATABASE_URI'])
 elif db_env == 'test':
     config.set_main_option('sqlalchemy.url', env_values['TEST_SQLALCHEMY_DATABASE_URI'])
 

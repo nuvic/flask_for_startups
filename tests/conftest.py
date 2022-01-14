@@ -16,7 +16,7 @@ from flask_for_startups.models import Base, User, Account
 
 @pytest.fixture(scope="session")
 def app(request):
-    app = create_app(config_name='test')
+    app = create_app(config_name="test")
 
     # Get clean test database: delete data from all tables in the test db
     for table in reversed(Base.metadata.sorted_tables):
@@ -43,10 +43,11 @@ def client(app):
 
 @pytest.fixture(scope="session")
 def _connection(app):
-    engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+    engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"])
     connection = engine.connect()
     yield connection
     connection.close()
+
 
 # Session = scoped_session(sessionmaker())
 @pytest.fixture(scope="session")
@@ -100,7 +101,9 @@ def user_details():
     class UserDetails(object):
         test_username = "test_user"
         test_email = "test@email.com"
+
     return UserDetails
+
 
 @pytest.fixture()
 def existing_user(db, user_details):
@@ -108,7 +111,11 @@ def existing_user(db, user_details):
     db.session.add(account_model)
     db.session.flush()
 
-    user_model = User(username=user_details.test_username, email=user_details.test_email, account_id=account_model.account_id)
+    user_model = User(
+        username=user_details.test_username,
+        email=user_details.test_email,
+        account_id=account_model.account_id,
+    )
     db.session.add(user_model)
     db.session.commit()
     return user_model

@@ -36,6 +36,7 @@ def get_business_requirement_error_response(business_logic_error, http_status_co
     }
     return resp, http_status_code
 
+
 def get_db_error_response(db_error, http_status_code):
     resp = {
         "errors": {

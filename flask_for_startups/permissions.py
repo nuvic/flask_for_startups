@@ -20,8 +20,9 @@ def permissions_list(permission_constants_list):
         raise custom_errors.PermissionsDeniedError
     return
 
+
 def admin_required(current_user_model):
-    role_to_check = 'admin'
+    role_to_check = "admin"
     if role_to_check not in current_user_model.roles:
         raise custom_errors.PermissionsDeniedError
     return

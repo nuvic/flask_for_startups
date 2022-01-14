@@ -2,7 +2,6 @@
 
 # Core Flask imports
 from flask import render_template
-from flask_login import login_required
 
 # Third-party imports
 
@@ -10,14 +9,17 @@ from flask_login import login_required
 
 
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
+
 
 def register():
-    return render_template('register.html')
+    return render_template("register.html")
+
 
 def login():
-    return render_template('login.html')
+    return render_template("login.html")
+
 
 @login_required
 def settings():
-    return render_template('settings.html')
+    return render_template("settings.html")
