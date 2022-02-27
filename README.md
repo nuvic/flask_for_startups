@@ -1,10 +1,13 @@
 # flask_for_startups
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-The purpose of this project:
 
-> I wrote this guide to explain how to write software in a way that maximizes the number of chances your startup has to succeed — by making it easy to maintain development velocity regardless of the inevitable-but-unknowable future changes to team size, developer competence and experience, product functionality, etc. The idea is that, given the inherent uncertainty, startups can massively increase their odds of success by putting some basic systems in place to help maximize the number of ideas, features, and hypotheses they can test; in other words, maximizing "lead bullets," to borrow the phrase from this [blog post](https://a16z.com/2011/11/13/lead-bullets/) by Ben Horowitz.
-> From Alex Kurpp's article Alex Krupp's article [Django for Startup Founders: A better software architecture for SaaS startups and consumer apps](https://alexkrupp.typepad.com/sensemaking/2021/06/django-for-startup-founders-a-better-software-architecture-for-saas-startups-and-consumer-apps.html)
+This flask boilerplate was written to help make it easy to iterate on your startup/indiehacker business.
+
+## Acknowledgements
+
+- Alex Krupp's [django_for_startups repo](https://github.com/Alex3917/django_for_startups) and [article](https://alexkrupp.typepad.com/sensemaking/2021/06/django-for-startup-founders-a-better-software-architecture-for-saas-startups-and-consumer-apps.html)
+- Miguel Grinberg's [flask mega tutorial repo](https://github.com/miguelgrinberg/microblog).
 
 ## Why is this useful?
 
@@ -34,24 +37,29 @@ To make it simple to see, let's go through the `/register` route to see how a us
   * here the view function in file `account_management_views.py` looks like this:
   ```python
   def register_account():
-    unsafe_username = request.json.get('username')
-    unsafe_email = request.json.get('email')
+    unsafe_username = request.json.get("username")
+    unsafe_email = request.json.get("email")
+    unhashed_password = request.json.get("password")
 
     sanitized_username = sanitization.strip_xss(unsafe_username)
     sanitized_email = sanitization.strip_xss(unsafe_email)
 
     try:
-        user_model = account_management_services.create_account(sanitized_username, sanitized_email)
+        user_model = account_management_services.create_account(
+            sanitized_username, sanitized_email, unhashed_password
+        )
     except marshmallow.exceptions.ValidationError as e:
         return get_validation_error_response(validation_error=e, http_status_code=422)
     except custom_errors.EmailAddressAlreadyExistsError as e:
-        return get_business_requirement_error_response(business_logic_error=e, http_status_code=409)
+        return get_business_requirement_error_response(
+            business_logic_error=e, http_status_code=409
+        )
     except custom_errors.InternalDbError as e:
         return get_db_error_response(db_error=e, http_status_code=500)
 
     login_user(user_model, remember=True)
 
-    return {'message': 'success'}, 201
+    return {"message": "success"}, 201
   ```
   * it shows linearly what functions are called for this endpoint  (*readability* and *predictability*)
   * the user input is always sanitized first, with clear variable names of what's unsafe and what's sanitized
@@ -63,19 +71,32 @@ To make it simple to see, let's go through the `/register` route to see how a us
   def create_account(sanitized_username, sanitized_email):
       fields_to_validate_dict = {
           "username": sanitized_username,
-          "email": sanitized_email
+          "email": sanitized_email,
+          "password": unhashed_password,
       }
 
       AccountValidator().load(fields_to_validate_dict)
 
-      if db.session.query(User.email).filter_by(email=sanitized_email).first() is not None:
+      if (
+          db.session.query(User.email).filter_by(email=sanitized_email).first()
+          is not None
+      ):
           raise custom_errors.EmailAddressAlreadyExistsError()
+
+      hash = bcrypt.hashpw(unhashed_password.encode(), bcrypt.gensalt())
+      password_hash = hash.decode()
 
       account_model = Account()
       db.session.add(account_model)
       db.session.flush()
 
-      user_model = User(username=sanitized_username, email=sanitized_email, account_id=account_model.account_id)
+      user_model = User(
+          username=sanitized_username,
+          password_hash=password_hash,
+          email=sanitized_email,
+          account_id=account_model.account_id,
+      )
+
       db.session.add(user_model)
       db.session.commit()
 
@@ -110,36 +131,18 @@ To make it simple to see, let's go through the `/register` route to see how a us
 
 ## Instructions
 
-### PostgreSQL setup
+Change `.sample_flaskenv` to `.flaskenv`
 
-`sudo apt install postgresql postgresql-contrib`
+### Database setup
 
-Creating a new role:
-```
-sudo -u postgres psql
-> create user your_user
-> \password your_password
-```
+Databases supported:
+- PostgreSQL
+- MySQL
+- SQLite
 
-Creating a development database with necessary extensions:
-```
-sudo su postgres
-createdb your_database_name
-psql -d your_database_name
-> grant all privileges on database your_database_name to your_user
-> create extension if not exists pgcrypto with schema public;
-> create extension if not exists "uuid-ossp" with schema public
-```
+However, I've only tested using PostgreSQL.
 
-(Optional: only if you want to run tests). Creating a test database with necessary extensions:
-```
-sudo su postgres
-createdb your_test_database_name
-psql -d your_test_database_name
-> grant all privileges on database your_test_database_name to your_user
-> create extension if not exists pgcrypto with schema public;
-> create extension if not exists "uuid-ossp" with schema public
-```
+Replace the `DEV_DATABASE_URI` with your database uri. If you're wishing to run the tests, update `TEST_DATABASE_URI`.
 
 ### Repo setup
 
@@ -149,28 +152,21 @@ psql -d your_test_database_name
 * activate virtual environment: `source venv/bin/activate`
 * install requirements: `pip install -r requirements.txt`
 * rename `.sample_flaskenv` to `.flaskenv` and update the relevant environment variables in `.flaskenv`
-    * specifically: BASE_DIR, DEV_DATABASE_URI, DB_NAME, TEST_DATABASE_URI
-* initialize the dev database: `./scripts/db_migrate_dev.sh`
+* initialize the dev database: `alembic -c migrations/alembic.ini -x db=dev upgrade head`
 * run server: `flask run`
 
 ### Updating db schema
 
 * if you make changes to models.py and want alembic to auto generate the db migration: `./scripts/db_revision_autogen.sh "your_change_here"
-* if you want to write your own changes: `./scripts/db_revision_manual.sh "your_change_here" and find the new migration file in `migrations/versions`
+* if you want to write your own changes: `./scripts/db_revision_manual.sh "your_change_here"` and find the new migration file in `migrations/versions`
 
 ### Run tests
 
-* if your test db needs to be migrated to latest schema: `./scripts/db_migrate_test.sh`
+* if your test db needs to be migrated to latest schema: `alembic -c migrations/alembic.ini -x db=test upgrade head`
 * `python -m pytest tests`
 
 ## Other details
 
-* Why UUIDs as primary key?
+* Sequential IDs vs UUIDs?
   * see [brandur's article](https://brandur.org/nanoglyphs/026-ids) for a good analysis of UUID vs sequence IDs
   * instead of UUID4, you can use a sequential UUID like a [tuid](https://github.com/tanglebones/pg_tuid)
-
-
-## Acknowledgements
-
-- Alex Krupp's repo [django_for_startups](https://github.com/Alex3917/django_for_startups)
-- Miguel Grinberg's [flask mega tutorial repo](https://github.com/miguelgrinberg/microblog).
