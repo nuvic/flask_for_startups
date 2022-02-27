@@ -22,30 +22,36 @@ fileConfig(config.config_file_name)
 # Get db uri depending on argument passed
 
 cmd_kwargs = context.get_x_argument(as_dictionary=True)
-if 'db' not in cmd_kwargs:
-    raise Exception("We couldn\'t find `db` in the CLI arguments. "
-                    "Please verify `alembic` was run with `-x db=<db_name>` "
-                    "(e.g. `alembic -x db=development upgrade head`)")
+if "db" not in cmd_kwargs:
+    raise Exception(
+        "We couldn't find `db` in the CLI arguments. "
+        "Please verify `alembic` was run with `-x db=<db_name>` "
+        "(e.g. `alembic -x db=development upgrade head`)"
+    )
 
-db_env = cmd_kwargs['db']
+db_env = cmd_kwargs["db"]
 
-if db_env not in ['dev', 'test']:
-    raise Exception("The `db` argument only accepts `dev` or `test`."
-                    "Please verify `alembic` was run with `-x db=<db_name>` "
-                    "(e.g. `alembic -x db=development upgrade head`)")
+if db_env not in ["dev", "test"]:
+    raise Exception(
+        "The `db` argument only accepts `dev` or `test`."
+        "Please verify `alembic` was run with `-x db=<db_name>` "
+        "(e.g. `alembic -x db=development upgrade head`)"
+    )
+
 
 def get_dot_env():
     cwd = Path(os.getcwd())
-    env_file = Path(cwd, '.flaskenv')
+    env_file = Path(cwd, ".flaskenv")
     values = dotenv_values(env_file)
     return values
-    
+
+
 env_values = get_dot_env()
 
-if db_env == 'dev':
-    config.set_main_option('sqlalchemy.url', env_values['DEV_DATABASE_URI'])
-elif db_env == 'test':
-    config.set_main_option('sqlalchemy.url', env_values['TEST_DATABASE_URI'])
+if db_env == "dev":
+    config.set_main_option("sqlalchemy.url", env_values["DEV_DATABASE_URI"])
+elif db_env == "test":
+    config.set_main_option("sqlalchemy.url", env_values["TEST_DATABASE_URI"])
 
 
 # add your model's MetaData object here
@@ -58,6 +64,7 @@ cwd = os.getcwd()
 sys.path.append(cwd)
 
 from flask_for_startups.models import Base
+
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
@@ -104,9 +111,7 @@ def run_migrations_online():
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()

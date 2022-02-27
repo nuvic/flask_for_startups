@@ -125,4 +125,3 @@ def existing_user(db, user_details):
     db.session.add(user_model)
     db.session.commit()
     return user_model
-

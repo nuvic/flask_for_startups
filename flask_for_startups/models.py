@@ -51,9 +51,7 @@ class User(UserMixin, Base):
     password_hash = Column(String(128), nullable=False)
     confirmed = Column(Boolean, nullable=False, server_default="false")
     created_at = Column(DateTime, nullable=False, server_default=func.now())
-    account_id = Column(
-        Integer, ForeignKey("accounts.account_id"), nullable=False
-    )
+    account_id = Column(Integer, ForeignKey("accounts.account_id"), nullable=False)
     account = relationship("Account", back_populates="users")
     roles = relationship("Role", secondary="users_x_roles")
 
