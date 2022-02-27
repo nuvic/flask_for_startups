@@ -3,13 +3,13 @@
 # Core Flask imports
 
 # Third-party imports
-import marshmallow
+import bcrypt
 
 # App imports
 from flask_for_startups import db_manager as db
-from flask_for_startups.models import User, Account
-from flask_for_startups.utils import custom_errors
-from flask_for_startups.utils.validators import AccountValidator, EmailValidator
+from ..models import User, Account
+from ..utils import custom_errors
+from ..utils.validators import AccountValidator, EmailValidator
 
 
 def get_user_profile_from_user_model(user_model):
@@ -39,8 +39,12 @@ def update_email(current_user_model, sanitized_email):
     return
 
 
-def create_account(sanitized_username, sanitized_email):
-    fields_to_validate_dict = {"username": sanitized_username, "email": sanitized_email}
+def create_account(sanitized_username, sanitized_email, unhashed_password):
+    fields_to_validate_dict = {
+        "username": sanitized_username,
+        "email": sanitized_email,
+        "password": unhashed_password,
+    }
 
     AccountValidator().load(fields_to_validate_dict)
 
@@ -50,33 +54,37 @@ def create_account(sanitized_username, sanitized_email):
     ):
         raise custom_errors.EmailAddressAlreadyExistsError()
 
+    hash = bcrypt.hashpw(unhashed_password.encode(), bcrypt.gensalt())
+    password_hash = hash.decode()
+
     account_model = Account()
     db.session.add(account_model)
     db.session.flush()
 
     user_model = User(
         username=sanitized_username,
+        password_hash=password_hash,
         email=sanitized_email,
         account_id=account_model.account_id,
     )
+
     db.session.add(user_model)
     db.session.commit()
 
     return user_model
 
 
-def verify_login(sanitized_username, sanitized_email):
-    fields_to_validate_dict = {"username": sanitized_username, "email": sanitized_email}
+def verify_login(sanitized_email, password):
+    fields_to_validate_dict = {"email": sanitized_email}
 
-    AccountValidator().load(fields_to_validate_dict)
+    EmailValidator().load(fields_to_validate_dict)
 
-    user_model = (
-        db.session.query(User)
-        .filter_by(email=sanitized_email, username=sanitized_username)
-        .first()
-    )
+    user_model = db.session.query(User).filter_by(email=sanitized_email).first()
 
     if not user_model:
-        raise custom_errors.UserDoesNotExistError()
+        raise custom_errors.CouldNotVerifyLogin()
+
+    if not bcrypt.checkpw(password.encode(), user_model.password_hash.encode()):
+        raise custom_errors.CouldNotVerifyLogin()
 
     return user_model

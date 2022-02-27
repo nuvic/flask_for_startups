@@ -45,18 +45,17 @@ env_values = get_dot_env()
 if db_env == 'dev':
     config.set_main_option('sqlalchemy.url', env_values['DEV_DATABASE_URI'])
 elif db_env == 'test':
-    config.set_main_option('sqlalchemy.url', env_values['TEST_SQLALCHEMY_DATABASE_URI'])
+    config.set_main_option('sqlalchemy.url', env_values['TEST_DATABASE_URI'])
 
 
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-try:
-    sys.path.index(env_values['BASE_DIR'])
-except ValueError:
-    # To load flask_for_startups
-    sys.path.append(env_values['BASE_DIR'])
+
+# We are adding our current working directory to our path so we can properly import our app's `models.Base` below
+cwd = os.getcwd()
+sys.path.append(cwd)
 
 from flask_for_startups.models import Base
 target_metadata = Base.metadata

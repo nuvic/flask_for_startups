@@ -6,7 +6,6 @@ import os
 # Core Flask imports
 from flask import Flask
 from flask_login import LoginManager
-from flask_wtf.csrf import CSRFProtect
 
 # Third-party imports
 
@@ -19,7 +18,6 @@ from config import config_manager
 # Load extensions
 login_manager = LoginManager()
 login_manager.login_view = "login"
-csrf = CSRFProtect()
 db_manager = DatabaseManager()
 
 
@@ -56,15 +54,11 @@ def create_app(config_name):
     login_manager.login_view = "login"
     login_manager.init_app(app)
 
-    csrf.init_app(app)
-
     db_manager.init_app(app)
 
     if not app.debug and not app.testing:
         load_logs(app)
 
     init_routes(app=app, db=db_manager.session)
-
-    from flask_for_startups import models
 
     return app

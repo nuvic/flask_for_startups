@@ -6,6 +6,7 @@
 
 # App imports
 from flask_for_startups.models import User
+from flask_for_startups.utils.custom_errors import CouldNotVerifyLogin
 
 
 def test_index(client):
@@ -16,14 +17,17 @@ def test_index(client):
 def test_register_view(client):
     response = client.get("/register")
 
-    # test that viewing page renders without template errors
     assert response.status_code == 200
 
 
 def test_register_service(client, db, user_details):
     response = client.post(
         "/api/register",
-        json={"username": user_details.test_username, "email": user_details.test_email},
+        json={
+            "username": user_details.test_username,
+            "email": user_details.test_email,
+            "password": user_details.test_password,
+        },
     )
 
     # test successful account registration
@@ -39,7 +43,11 @@ def test_register_service(client, db, user_details):
 def test_register_service_reject_duplicates(client, db, user_details):
     response = client.post(
         "/api/register",
-        json={"username": user_details.test_username, "email": user_details.test_email},
+        json={
+            "username": user_details.test_username,
+            "email": user_details.test_email,
+            "password": user_details.test_password,
+        },
     )
 
     assert response.status_code == 201
@@ -47,7 +55,11 @@ def test_register_service_reject_duplicates(client, db, user_details):
     # test that duplicate email registrations are not allowed
     response_duplicate = client.post(
         "/api/register",
-        json={"username": user_details.test_username, "email": user_details.test_email},
+        json={
+            "username": user_details.test_username,
+            "email": user_details.test_email,
+            "password": user_details.test_password,
+        },
     )
 
     assert response_duplicate.status_code == 409
@@ -65,43 +77,48 @@ def test_register_service_requires_email(client, db, user_details):
         "/api/register", json={"username": user_details.test_username}
     )
 
-    email_error_response = response.json["errors"]["field_errors"]["email"][0]
     assert response.status_code == 422
+
+    email_error_response = response.json["errors"]["field_errors"]["email"][0]
     assert email_error_response == "Field may not be null."
 
+    password_error_response = response.json["errors"]["field_errors"]["password"][0]
+    assert password_error_response == "Field may not be null."
 
-def test_login_success(client, db, existing_user):
+
+def test_login_success(client, existing_user, user_details):
     login_view_response = client.get("/login")
 
     assert login_view_response.status_code == 200
 
     response = client.post(
         "/api/login",
-        json={"username": existing_user.username, "email": existing_user.email},
+        json={"email": existing_user.email, "password": user_details.test_password},
     )
 
     assert response.status_code == 200
     assert response.json["message"] == "success"
 
 
-def test_login_fail(client, db):
+def test_login_fail(client, existing_user):
     response = client.post(
-        "/api/login", json={"username": "fake", "email": "fake@email.com"}
+        "/api/login",
+        json={"email": existing_user.email, "password": "fake password"},
     )
 
     response_display_error = response.json["errors"]["display_error"]
-    expected_display_error = (
-        "There is no user with the entered credentials. Please try again."
-    )
 
     assert response.status_code == 401
-    assert response_display_error == expected_display_error
+    assert response_display_error == CouldNotVerifyLogin.message
 
 
-def test_logout(client, db, existing_user):
+def test_logout(client, existing_user, user_details):
     client.post(
         "/api/login",
-        json={"username": existing_user.username, "email": existing_user.email},
+        json={"email": existing_user.email, "password": user_details.test_password},
     )
 
-    response = client.get("/api/logout")
+    response = client.get("/logout", follow_redirects=True)
+
+    # check that the path changed
+    assert response.request.path == "/"

@@ -1,12 +1,10 @@
 # flask_for_startups
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-This project came out of Alex Krupp's article [Django for Startup Founders: A better software architecture for SaaS startups and consumer apps](https://alexkrupp.typepad.com/sensemaking/2021/06/django-for-startup-founders-a-better-software-architecture-for-saas-startups-and-consumer-apps.html). 
+The purpose of this project:
 
-Here's how he describes the purpose of this structure:
 > I wrote this guide to explain how to write software in a way that maximizes the number of chances your startup has to succeed — by making it easy to maintain development velocity regardless of the inevitable-but-unknowable future changes to team size, developer competence and experience, product functionality, etc. The idea is that, given the inherent uncertainty, startups can massively increase their odds of success by putting some basic systems in place to help maximize the number of ideas, features, and hypotheses they can test; in other words, maximizing "lead bullets," to borrow the phrase from this [blog post](https://a16z.com/2011/11/13/lead-bullets/) by Ben Horowitz.
-
-Acknowledgements: Alex Krupp's repo [django_for_startups](https://github.com/Alex3917/django_for_startups) and Miguel Grinberg's [flask mega tutorial repo](https://github.com/miguelgrinberg/microblog).
+> From Alex Kurpp's article Alex Krupp's article [Django for Startup Founders: A better software architecture for SaaS startups and consumer apps](https://alexkrupp.typepad.com/sensemaking/2021/06/django-for-startup-founders-a-better-software-architecture-for-saas-startups-and-consumer-apps.html)
 
 ## Why is this useful?
 
@@ -169,3 +167,9 @@ psql -d your_test_database_name
 * Why UUIDs as primary key?
   * see [brandur's article](https://brandur.org/nanoglyphs/026-ids) for a good analysis of UUID vs sequence IDs
   * instead of UUID4, you can use a sequential UUID like a [tuid](https://github.com/tanglebones/pg_tuid)
+
+
+## Acknowledgements
+
+- Alex Krupp's repo [django_for_startups](https://github.com/Alex3917/django_for_startups)
+- Miguel Grinberg's [flask mega tutorial repo](https://github.com/miguelgrinberg/microblog).

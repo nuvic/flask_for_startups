@@ -5,9 +5,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, '.flaskenv'))
 
 class Config(object):
-    WTF_CSRF_SECRET_KEY = os.environ.get('WTF_CSRF_SECRET_KEY')
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    BASE_DIR = os.environ.get('BASE_DIR')
     SESSION_COOKIE_HTTPONLY = os.environ.get('SESSION_COOKIE_HTTPONLY')
     REMEMBER_COOKIE_HTTPONLY = os.environ.get('REMEMBER_COOKIE_HTTPONLY')
     SESSION_COOKIE_SAMESITE = os.environ.get('SESSION_COOKIE_SAMESITE')
@@ -24,10 +22,14 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URI')
-    WTF_CSRF_ENABLED = False
+
+
+class ProductionConfig(Config):
+    SQLALCHEMY_DATABASE_URI = os.environ.get('PROD_DATABASE_URI')
 
 
 config_manager = {
     'dev': DevelopmentConfig,
-    'test': TestingConfig
+    'test': TestingConfig,
+    'prod': ProductionConfig
 }

@@ -7,16 +7,6 @@
 # App imports
 
 
-def get_permission_error_response(permission_error, http_status_code):
-    resp = {
-        "errors": {
-            "display_error": permission_error.message,
-            "internal_error_code": permission_error.internal_error_code,
-        }
-    }
-    return resp, http_status_code
-
-
 def get_validation_error_response(validation_error, http_status_code, display_error=""):
     resp = {
         "errors": {

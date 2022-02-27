@@ -24,6 +24,7 @@ class AccountValidator(Schema):
         ],
     )
     email = fields.Email(required=True, load_only=True)
+    password = fields.Str(requierd=True, load_only=True)
 
 
 class EmailValidator(Schema):

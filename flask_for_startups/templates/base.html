@@ -1,7 +1,7 @@
 <html>
     <head>
         <title>Welcome to Flask for Startups</title>
-        <meta name="csrf-token" content="{{ csrf_token() }}" />
+        <link rel= "stylesheet" type= "text/css" href="{{ url_for('static',filename='styles/sakura.css') }}">
     </head>
     <body>
     {% block content %}{% endblock %}

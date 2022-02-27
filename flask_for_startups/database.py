@@ -7,7 +7,6 @@ from pathlib import Path
 # Third-party imports
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker, declarative_base
-from sqlalchemy.exc import SQLAlchemyError
 
 # App imports
 

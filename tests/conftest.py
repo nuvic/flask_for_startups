@@ -8,6 +8,7 @@ import pytest
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import event
 from sqlalchemy import create_engine
+import bcrypt
 
 # App imports
 from flask_for_startups import create_app, db_manager
@@ -101,6 +102,7 @@ def user_details():
     class UserDetails(object):
         test_username = "test_user"
         test_email = "test@email.com"
+        test_password = "my_secure_password"
 
     return UserDetails
 
@@ -111,11 +113,16 @@ def existing_user(db, user_details):
     db.session.add(account_model)
     db.session.flush()
 
+    hash = bcrypt.hashpw(user_details.test_password.encode(), bcrypt.gensalt())
+    password_hash = hash.decode()
+
     user_model = User(
         username=user_details.test_username,
+        password_hash=password_hash,
         email=user_details.test_email,
         account_id=account_model.account_id,
     )
     db.session.add(user_model)
     db.session.commit()
     return user_model
+
