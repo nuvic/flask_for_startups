@@ -78,7 +78,6 @@ def user():
 
 
 @login_required
-@roles_required(["admin"])
 def email():
     unsafe_email = request.json.get("email")
 

@@ -1,5 +1,4 @@
 # Standard Library imports
-import os
 import pytest
 
 # Core Flask imports
@@ -11,8 +10,8 @@ from sqlalchemy import create_engine
 import bcrypt
 
 # App imports
-from flask_for_startups import create_app, db_manager
-from flask_for_startups.models import Base, User, Account
+from app import create_app, db_manager
+from app.models import Base, User, Account
 
 
 @pytest.fixture(scope="session")

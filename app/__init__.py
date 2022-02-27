@@ -10,14 +10,13 @@ from flask_login import LoginManager
 # Third-party imports
 
 # App imports
-from flask_for_startups.database import DatabaseManager
-from flask_for_startups.routes import init_routes
+from app.database import DatabaseManager
+from app.routes import init_routes
 from config import config_manager
 
 
 # Load extensions
 login_manager = LoginManager()
-login_manager.login_view = "login"
 db_manager = DatabaseManager()
 
 
@@ -59,6 +58,6 @@ def create_app(config_name):
     if not app.debug and not app.testing:
         load_logs(app)
 
-    init_routes(app=app, db=db_manager.session)
+    init_routes(app=app, db=db_manager.session, login_manager=login_manager)
 
     return app

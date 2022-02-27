@@ -63,7 +63,7 @@ elif db_env == "test":
 cwd = os.getcwd()
 sys.path.append(cwd)
 
-from flask_for_startups.models import Base
+from app.models import Base
 
 target_metadata = Base.metadata
 

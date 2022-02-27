@@ -5,10 +5,11 @@
 # Third-party imports
 
 
-def init_routes(app, db):
+def init_routes(app, db, login_manager):
     """
     app: instance of flask app
     db: DatabaseManager.session
+    login_manager: flask_login extension class
     """
 
     # App imports (placed here to avoid circular import)
@@ -18,7 +19,6 @@ def init_routes(app, db):
         static_views,
     )
     from .models import User
-    from flask_for_startups import login_manager
 
     # Request management
     @app.before_request
@@ -66,11 +66,11 @@ def init_routes(app, db):
     # Login Required API
     app.add_url_rule("/api/user", view_func=account_management_views.user)
 
-    # Admin required
-    app.add_url_rule("/admin", view_func=static_views.admin)
-
     app.add_url_rule(
         "/api/email", view_func=account_management_views.email, methods=["POST"]
     )
+
+    # Admin required
+    app.add_url_rule("/admin", view_func=static_views.admin)
 
     return

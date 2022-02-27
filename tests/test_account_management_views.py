@@ -5,8 +5,8 @@
 # Third-party imports
 
 # App imports
-from flask_for_startups.models import User
-from flask_for_startups.utils.custom_errors import CouldNotVerifyLogin
+from app.models import User
+from app.utils.custom_errors import CouldNotVerifyLogin
 
 
 def test_index(client):

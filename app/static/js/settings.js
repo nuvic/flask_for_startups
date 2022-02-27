@@ -1,12 +1,10 @@
 function getUserProfile() {
   let currentEmailEl = document.getElementById('current_email');
   let currentUsernameEl = document.getElementById('current_username');
-  let csrf = document.getElementsByName("csrf-token")[0].content;
   fetch("/api/user", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRFToken": csrf,
     },
     credentials: "same-origin"
   })

@@ -17,7 +17,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 # App imports
-from flask_for_startups import db_manager
+from app import db_manager
 
 # alias
 Base = db_manager.base
@@ -34,6 +34,9 @@ class Role(Base):
     __tablename__ = "roles"
     role_id = Column(Integer, primary_key=True)
     name = Column(Text, nullable=False)
+
+    def __repr__(self):
+        return f"Role {self.name}"
 
 
 class UserRole(Base):
@@ -59,4 +62,4 @@ class User(UserMixin, Base):
         return self.user_id
 
     def __repr__(self):
-        return "<User {}>".format(self.username)
+        return f"<User {self.email}>"

@@ -6,7 +6,7 @@
 import bcrypt
 
 # App imports
-from flask_for_startups import db_manager as db
+from app import db_manager as db
 from ..models import User, Account
 from ..utils import custom_errors
 from ..utils.validators import AccountValidator, EmailValidator

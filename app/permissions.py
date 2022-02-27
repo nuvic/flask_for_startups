@@ -15,7 +15,7 @@ def roles_required(roles):
     def decorated_function(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
-            if set(roles).issubset(current_user.roles):
+            if set(roles).issubset({r.name for r in current_user.roles}):
                 return f(*args, **kwargs)
             else:
                 return get_business_requirement_error_response(
