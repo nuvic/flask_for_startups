@@ -28,6 +28,7 @@ nosetests.xml
 # Translations
 *.mo
 
+.venv
 venv
 logs
 migrations/schema.sql
