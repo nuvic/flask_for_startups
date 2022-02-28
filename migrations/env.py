@@ -1,14 +1,19 @@
-from logging.config import fileConfig
-
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-
-from alembic import context
-
-from dotenv import dotenv_values
+# Standard Library imports
 import os
 from pathlib import Path
 import sys
+from logging.config import fileConfig
+
+# Core Flask imports
+
+# Third-party imports
+from sqlalchemy import engine_from_config
+from sqlalchemy import pool
+from alembic import context
+from dotenv import dotenv_values
+
+# App imports
+from app.models import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -59,11 +64,10 @@ elif db_env == "test":
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 
-# We are adding our current working directory to our path so we can properly import our app's `models.Base` below
+# We are adding our current working directory to our path
+# so we can properly import our app's `models.Base` below
 cwd = os.getcwd()
 sys.path.append(cwd)
-
-from app.models import Base
 
 target_metadata = Base.metadata
 

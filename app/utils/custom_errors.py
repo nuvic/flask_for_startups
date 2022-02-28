@@ -22,7 +22,7 @@ class EmailAddressAlreadyExistsError(Error):
 
 
 class InternalDbError(Error):
-    message = "Sorry, we had a problem with that request. Please try again later or contact customer support."
+    message = "Sorry, we had a problem with that request. Please try again later or contact customer support."  # noqa: E501
     internal_error_code = 50001
 
 
@@ -32,5 +32,5 @@ class CouldNotVerifyLogin(Error):
 
 
 class PermissionsDeniedError(Error):
-    message = "Sorry, you don't have the necessary permissions. Please contact your admin or customer support."
+    message = "Sorry, you don't have the necessary permissions. Please contact your admin or customer support."  # noqa: E501
     internal_error_code = 40301

@@ -29,7 +29,7 @@ def load_logs(app):
         if not os.path.exists("logs"):
             os.mkdir("logs")
         file_handler = RotatingFileHandler(
-            "logs/flask_for_startups.log", maxBytes=10240, backupCount=10
+            "logs/app.log", maxBytes=10240, backupCount=10
         )
         file_handler.setFormatter(
             logging.Formatter(
@@ -40,7 +40,7 @@ def load_logs(app):
         app.logger.addHandler(file_handler)
 
     app.logger.setLevel(logging.INFO)
-    app.logger.info("flask_for_startups startup")
+    app.logger.info("app startup")
     return
 
 

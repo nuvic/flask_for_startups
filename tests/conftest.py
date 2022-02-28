@@ -72,7 +72,7 @@ def db(_connection, _scoped_session, request):
         config for this to work), starting a savepoint
         will allow tests to also use rollback within tests
 
-        Reference: https://docs.sqlalchemy.org/en/14/orm/session_transaction.html#session-begin-nested
+        Reference: https://docs.sqlalchemy.org/en/14/orm/session_transaction.html#session-begin-nested  # noqa: E501
         """
         if transaction.nested and not transaction._parent.nested:
             # ensure that state is expired the way session.commit() at

@@ -18,7 +18,7 @@ def get_user_profile_from_user_model(user_model):
     allowlisted_keys = ["username", "email"]
 
     for key in list(user_model_dict.keys()):
-        if not key in allowlisted_keys:
+        if key not in allowlisted_keys:
             user_model_dict.pop(key)
 
     return user_model_dict

@@ -1,6 +1,4 @@
 # Standard Library imports
-import os
-from pathlib import Path
 
 # Core Flask imports
 
@@ -27,4 +25,6 @@ class DatabaseManager:
         self.engine = create_engine(sqlalchemy_database_uri)
 
     def create_scoped_session(self):
-        self.session = scoped_session(sessionmaker(autocommit=False, bind=self.engine))
+        self.session = scoped_session(
+            sessionmaker(autocommit=False, bind=self.engine)
+        )

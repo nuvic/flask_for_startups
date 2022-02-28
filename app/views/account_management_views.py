@@ -15,7 +15,6 @@ from ..utils.error_utils import (
     get_validation_error_response,
     get_db_error_response,
 )
-from ..permissions import roles_required
 
 
 def register_account():
