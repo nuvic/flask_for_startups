@@ -2,7 +2,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 
-This flask boilerplate was written to help make it easy to iterate on your startup/indiehacker business.
+This flask boilerplate was written to help make it easy to iterate on your startup/indiehacker business, thereby increasing your chances of success.
 
 ## Acknowledgements
 
@@ -129,7 +129,7 @@ To make it simple to see, let's go through the `/register` route to see how a us
   * the tests are mostly integration tests using a test database
   * more work could be done here, but each endpoint should be tested for: permissions, validation errors, business requirement errors, and success conditions
 
-## Instructions
+## Setup Instructions
 
 Change `.sample_flaskenv` to `.flaskenv`
 
@@ -146,11 +146,14 @@ Replace the `DEV_DATABASE_URI` with your database uri. If you're wishing to run 
 
 ### Repo setup
 
-* clone repo
+* `git clone git@github.com:nuvic/flask_for_startups.git`
 * `sudo apt-get install python3-dev` (needed to compile psycopg2, the python driver for PostgreSQL)
-* `python3 -m venv venv`
-* activate virtual environment: `source venv/bin/activate`
-* install requirements: `pip install -r requirements.txt`
+* If using `poetry` for dependency management
+  * `poetry install
+* Else use `pip` to install dependencies
+  * `python3 -m venv venv`
+  * activate virtual environment: `source venv/bin/activate`
+  * install requirements: `pip install -r requirements.txt`
 * rename `.sample_flaskenv` to `.flaskenv` and update the relevant environment variables in `.flaskenv`
 * initialize the dev database: `alembic -c migrations/alembic.ini -x db=dev upgrade head`
 * run server: `flask run`
@@ -164,6 +167,17 @@ Replace the `DEV_DATABASE_URI` with your database uri. If you're wishing to run 
 
 * if your test db needs to be migrated to latest schema: `alembic -c migrations/alembic.ini -x db=test upgrade head`
 * `python -m pytest tests`
+
+### Dependency management
+
+Using [poetry](https://python-poetry.org/).
+
+Activate poetry shell and virtual environment:
+- `poetry shell`
+
+Check for outdated dependencies:
+- `poetry show --outdated`
+
 
 ## Other details
 
