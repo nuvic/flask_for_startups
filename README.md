@@ -4,6 +4,10 @@
 
 This flask boilerplate was written to help make it easy to iterate on your startup/indiehacker business, thereby increasing your chances of success.
 
+Interested in learning how this works? [![Get the book](https://img.shields.io/badge/-Get%20the%20book-blueviolet)](https://nuvic.gumroad.com/l/flaskforstartups).
+
+Want to show your support? [Get me a coffee ☕](https://www.buymeacoffee.com/nuvic)
+
 ## Acknowledgements
 
 - Alex Krupp's [django_for_startups repo](https://github.com/Alex3917/django_for_startups) and [article](https://alexkrupp.typepad.com/sensemaking/2021/06/django-for-startup-founders-a-better-software-architecture-for-saas-startups-and-consumer-apps.html)
