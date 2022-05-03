@@ -25,6 +25,17 @@ When you're working on a project you're serious about, you want a set of convent
 
 For side projects especially, having this structure would be useful because it would let you easily pick up the project after some time.
 
+## Features
+
+- Works with Python 3.9+
+- [12-Factor](https://12factor.net/) based settings via [`.flaskenv` configuration handling](https://flask.palletsprojects.com/en/2.1.x/config/)
+- Login and registration via [flask-login](https://github.com/maxcountryman/flask-login)
+- [SQLAlchemy](https://github.com/sqlalchemy/sqlalchemy) Python SQL toolkit and ORM
+- DB Migration using [Alembic](https://github.com/sqlalchemy/alembic)
+- Role-based access control (RBAC) with User, UserRole, and Role models ready to go
+- [Pytest](https://github.com/pytest-dev/pytest/) setup with fixtures for app and models, and integration tests with high coverage
+- Validation using [marshmallow](https://github.com/marshmallow-code/marshmallow)
+
 ### How is this different from other Flask tutorials?
 
 If you haven't read the above article, what's written here is a summary of the main points, and along with how it contrasts with the Flask structure from other popular tutorials.
