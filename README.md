@@ -4,7 +4,9 @@
 
 This flask boilerplate was written to help make it easy to iterate on your startup/indiehacker business, thereby increasing your chances of success.
 
-Interested in learning how this works? [![Get the book](https://img.shields.io/badge/-Get%20the%20book-blueviolet)](https://nuvic.gumroad.com/l/flaskforstartups).
+Interested in learning how this works?
+
+[![](https://www.flaskforstartups.com/imgs/get-the-book.png)](https://nuvic.gumroad.com/l/flaskforstartups)
 
 Want to show your support? [Get me a coffee ☕](https://www.buymeacoffee.com/nuvic)
 
@@ -160,7 +162,9 @@ Replace the `DEV_DATABASE_URI` with your database uri. If you're wishing to run 
   * install requirements: `pip install -r requirements.txt`
 * rename `.sample_flaskenv` to `.flaskenv` and update the relevant environment variables in `.flaskenv`
 * initialize the dev database: `alembic -c migrations/alembic.ini -x db=dev upgrade head`
-* run server: `flask run`
+* run server:
+  * with poetry: `poetry run flask run`
+  * without poetry: `flask run`
 
 ### Updating db schema
 
