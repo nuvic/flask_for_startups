@@ -36,7 +36,7 @@ class Role(Base):
     name = Column(Text, nullable=False)
 
     def __repr__(self):
-        return f"Role {self.name}"
+        return f"<Role {self.name}>"
 
 
 class UserRole(Base):
