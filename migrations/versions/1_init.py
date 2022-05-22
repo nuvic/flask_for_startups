@@ -2,7 +2,7 @@
 
 Revision ID: 1_init
 Revises:
-Create Date: 2022-02-27 21:38:07.179063+00:00
+Create Date:
 
 """
 from alembic import op
