@@ -8,16 +8,16 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-Flask-Login = "^0.5.0"
-Flask = "^2.0.3"
-bleach = "^4.1.0"
-SQLAlchemy = "^1.4.31"
-alembic = "^1.7.6"
-marshmallow = "^3.14.1"
-pytest = "^7.0.1"
-python-dotenv = "^0.19.2"
-bcrypt = "^3.2.0"
-psycopg2 = "^2.9.3"
+Flask-Login = "^0.6.2"
+Flask = "^2.2.3"
+bleach = "^6.0.0"
+SQLAlchemy = "^2.0.9"
+alembic = "^1.10.3"
+marshmallow = "^3.19.0"
+pytest = "^7.3.0"
+python-dotenv = "^1.0.0"
+bcrypt = "^4.0.1"
+psycopg2 = "^2.9.6"
 
 
 [tool.poetry.group.dev.dependencies]
