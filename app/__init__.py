@@ -11,7 +11,6 @@ from flask_login import LoginManager
 
 # App imports
 from app.database import DatabaseManager
-from app.routes import init_routes
 from config import config_manager
 
 
@@ -55,9 +54,10 @@ def create_app(config_name):
 
     db_manager.init_app(app)
 
+    from . import routes
+    app.register_blueprint(routes.bp)
+
     if not app.debug and not app.testing:
         load_logs(app)
-
-    init_routes(app=app, db=db_manager.session, login_manager=login_manager)
 
     return app
