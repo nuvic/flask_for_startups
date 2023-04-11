@@ -34,7 +34,7 @@ For side projects especially, having this structure would be useful because it w
 - DB Migration using [Alembic](https://github.com/sqlalchemy/alembic)
 - Role-based access control (RBAC) with User, UserRole, and Role models ready to go
 - [Pytest](https://github.com/pytest-dev/pytest/) setup with fixtures for app and models, and integration tests with high coverage
-- Validation using [marshmallow](https://github.com/marshmallow-code/marshmallow)
+- Validation using [pydantic](https://github.com/pydantic/pydantic)
 
 ### How is this different from other Flask tutorials?
 
@@ -65,7 +65,7 @@ To make it simple to see, let's go through the `/register` route to see how a us
         user_model = account_management_services.create_account(
             sanitized_username, sanitized_email, unhashed_password
         )
-    except marshmallow.exceptions.ValidationError as e:
+    except ValidationError as e:
         return get_validation_error_response(validation_error=e, http_status_code=422)
     except custom_errors.EmailAddressAlreadyExistsError as e:
         return get_business_requirement_error_response(

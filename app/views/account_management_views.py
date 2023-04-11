@@ -4,7 +4,7 @@
 from flask import request, redirect, url_for
 
 # Third-party imports
-import marshmallow
+from pydantic import ValidationError
 from flask_login import login_user, logout_user, login_required, current_user
 
 # App imports
@@ -29,7 +29,7 @@ def register_account():
         user_model = account_management_services.create_account(
             sanitized_username, sanitized_email, unhashed_password
         )
-    except marshmallow.exceptions.ValidationError as e:
+    except ValidationError as e:
         return get_validation_error_response(validation_error=e, http_status_code=422)
     except custom_errors.EmailAddressAlreadyExistsError as e:
         return get_business_requirement_error_response(
@@ -51,7 +51,7 @@ def login_account():
 
     try:
         user_model = account_management_services.verify_login(sanitized_email, password)
-    except marshmallow.exceptions.ValidationError as e:
+    except ValidationError as e:
         return get_validation_error_response(validation_error=e, http_status_code=422)
     except custom_errors.CouldNotVerifyLogin as e:
         return get_business_requirement_error_response(
@@ -84,7 +84,7 @@ def email():
 
     try:
         account_management_services.update_email(current_user, sanitized_email)
-    except marshmallow.exceptions.ValidationError as e:
+    except ValidationError as e:
         return get_validation_error_response(validation_error=e, http_status_code=422)
     except custom_errors.EmailAddressAlreadyExistsError as e:
         return get_business_requirement_error_response(

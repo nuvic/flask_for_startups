@@ -3,35 +3,23 @@
 # Core Flask imports
 
 # Third-party imports
+from pydantic import BaseModel, validator, constr, EmailStr
 
 # App imports
 
 
-def get_validation_error_response(validation_error, http_status_code, display_error=""):
-    resp = {
-        "errors": {
-            "display_error": display_error,
-            "field_errors": validation_error.normalized_messages(),
-        }
-    }
-    return resp, http_status_code
+class AccountValidator(BaseModel):
+    username: constr(min_length=1, max_length=15) = ...
+    email: EmailStr = ...
+    password: str = ...
 
+    @validator('username')
+    def username_valid(cls, v):
+        if not v[0].isalpha():
+            raise ValueError('Username must start with a letter')
+        if not v.isalnum():
+            raise ValueError('Username must contain only letters, numbers, and underscores')
+        return v
 
-def get_business_requirement_error_response(business_logic_error, http_status_code):
-    resp = {
-        "errors": {
-            "display_error": business_logic_error.message,
-            "internal_error_code": business_logic_error.internal_error_code,
-        }
-    }
-    return resp, http_status_code
-
-
-def get_db_error_response(db_error, http_status_code):
-    resp = {
-        "errors": {
-            "display_error": db_error.message,
-            "internal_error_code": db_error.internal_error_code,
-        }
-    }
-    return resp, http_status_code
+class EmailValidator(BaseModel):
+    email: EmailStr
