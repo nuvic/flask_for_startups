@@ -25,7 +25,7 @@ def get_user_profile_from_user_model(user_model):
 
 
 def update_email(current_user_model, sanitized_email):
-    EmailValidator().load({"email": sanitized_email})
+    EmailValidator(email=sanitized_email)
 
     if (
         db.session.query(User.email).filter_by(email=sanitized_email).first()
@@ -40,13 +40,11 @@ def update_email(current_user_model, sanitized_email):
 
 
 def create_account(sanitized_username, sanitized_email, unhashed_password):
-    fields_to_validate_dict = {
-        "username": sanitized_username,
-        "email": sanitized_email,
-        "password": unhashed_password,
-    }
-
-    AccountValidator().load(fields_to_validate_dict)
+    AccountValidator(
+        username=sanitized_username,
+        email=sanitized_email,
+        password=unhashed_password
+    )
 
     if (
         db.session.query(User.email).filter_by(email=sanitized_email).first()
@@ -75,9 +73,7 @@ def create_account(sanitized_username, sanitized_email, unhashed_password):
 
 
 def verify_login(sanitized_email, password):
-    fields_to_validate_dict = {"email": sanitized_email}
-
-    EmailValidator().load(fields_to_validate_dict)
+    EmailValidator(email=sanitized_email)
 
     user_model = db.session.query(User).filter_by(email=sanitized_email).first()
 

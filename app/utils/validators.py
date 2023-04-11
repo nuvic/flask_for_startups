@@ -3,29 +3,23 @@
 # Core Flask imports
 
 # Third-party imports
-from marshmallow import Schema, fields, validate
+from pydantic import BaseModel, validator, constr, EmailStr
 
 # App imports
 
 
-class AccountValidator(Schema):
-    username = fields.Str(
-        required=True,
-        load_only=True,
-        validate=[
-            validate.Length(
-                1, 15, error="Usernames must be less than or equal to 15 characters."
-            ),
-            validate.Regexp(
-                "^[a-zA-Z][a-zA-Z0-9_]*$",
-                error="Username must start with a letter, and "
-                "contain only letters, numbers, and underscores.",
-            ),
-        ],
-    )
-    email = fields.Email(required=True, load_only=True)
-    password = fields.Str(required=True, load_only=True)
+class AccountValidator(BaseModel):
+    username: constr(min_length=1, max_length=15) = ...
+    email: EmailStr = ...
+    password: str = ...
 
+    @validator('username')
+    def username_valid(cls, v):
+        if not v[0].isalpha():
+            raise ValueError('Username must start with a letter')
+        if not v.isalnum():
+            raise ValueError('Username must contain only letters, numbers, and underscores')
+        return v
 
-class EmailValidator(Schema):
-    email = fields.Email(required=True, load_only=True)
+class EmailValidator(BaseModel):
+    email: EmailStr
