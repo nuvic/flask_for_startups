@@ -86,13 +86,11 @@ To make it simple to see, let's go through the `/register` route to see how a us
 * so how does the account creation service work?
   ```python
   def create_account(sanitized_username, sanitized_email):
-      fields_to_validate_dict = {
-          "username": sanitized_username,
-          "email": sanitized_email,
-          "password": unhashed_password,
-      }
-
-      AccountValidator().load(fields_to_validate_dict)
+      AccountValidator(
+          username=sanitized_username,
+          email=sanitized_email,
+          password=unhashed_password
+      )
 
       if (
           db.session.query(User.email).filter_by(email=sanitized_email).first()
