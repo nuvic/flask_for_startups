@@ -22,7 +22,7 @@ def upgrade():
         "accounts",
         sa.Column("account_id", sa.Integer(), nullable=False),
         sa.Column(
-            "created_at", sa.DateTime(), server_default=sa.text("now()"), nullable=True
+            "created_at", sa.DateTime(), server_default=sa.func.now(), nullable=True
         ),
         sa.PrimaryKeyConstraint("account_id"),
     )
@@ -40,7 +40,7 @@ def upgrade():
         sa.Column("password_hash", sa.String(length=128), nullable=False),
         sa.Column("confirmed", sa.Boolean(), server_default="false", nullable=False),
         sa.Column(
-            "created_at", sa.DateTime(), server_default=sa.text("now()"), nullable=False
+            "created_at", sa.DateTime(), server_default=sa.func.now(), nullable=False
         ),
         sa.Column("account_id", sa.Integer(), nullable=False),
         sa.ForeignKeyConstraint(
@@ -57,7 +57,7 @@ def upgrade():
         sa.Column(
             "assigned_at",
             sa.DateTime(),
-            server_default=sa.text("now()"),
+            server_default=sa.func.now(),
             nullable=False,
         ),
         sa.ForeignKeyConstraint(
